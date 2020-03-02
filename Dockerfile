@@ -1,4 +1,4 @@
-FROM shri4u/myapp-base:0.1
+FROM python:rc-alpine3.10
 RUN apt-get update --fix-missing && apt-get install -y --fix-missing \
     pkg-config libreadline-dev libxml2-dev
 
