@@ -19,9 +19,9 @@ spec:
       hostNetwork: true
       containers:
       - name: hello-app
-        image: shri4u/hello-app:rc1
+        image: shri4u/hello-flask:rc1
         imagePullPolicy: Always
-        command: ["/usr/local/bin/python3.7"]
+        command: ["/usr/bin/python"]
         args:
         - "/gitsecure-app/app.py"
         ports:

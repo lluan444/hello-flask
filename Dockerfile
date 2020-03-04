@@ -7,4 +7,4 @@ COPY requirements.txt /gitsecure-app
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
-CMD ["/usr/local/bin/python3.7", "/gitsecure-app/app.py"]
+CMD ["python", "/gitsecure-app/app.py"]
