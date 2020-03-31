@@ -1,2 +1,2 @@
 flask==1.1.1
-ansible==2.7.10 # this package is discovered as vulnerable on 2/26
+ansible==2.7.16
