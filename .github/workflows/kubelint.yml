@@ -1,6 +1,44 @@
-- name: Scan yamls
-  id: kube-lint-scan
-  uses: stackrox/kube-linter-action@v1
-  with:
-    directory: yamls
-    config: .kube-linter/config.yaml
+# This is a basic workflow to help you get started with Actions
+
+name: master
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Download latest kube-linter
+        run: |
+          LOCATION=$(curl -s https://api.github.com/repos/stackrox/kube-linter/releases/latest \
+          | grep "tag_name" \
+          | awk '{print "https://github.com/stackrox/kube-linter/releases/download/" substr($2, 2, length($2)-3) "/kube-linter-linux.tar.gz"}')
+          curl -L -o kube-linter-linux.tar.gz $LOCATION
+          tar -xf kube-linter-linux.tar.gz -C "${GITHUB_WORKSPACE}/"
+
+      # lint the cart-db yaml files using the cart configuration
+      # continue on error
+      - name: Run kube-linter lint on the repo
+        continue-on-error: true
+        run: |
+          cd "${GITHUB_WORKSPACE}"
+          ./kube-linter lint deploy/
+          
